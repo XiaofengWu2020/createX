@@ -23,6 +23,10 @@ while True:
         classes = results[0].boxes.cls.numpy()
         currCounter = Counter(classes)
 
+        if len(currCounter) == 0:
+            prevCounter = currCounter
+            print("no objects detected")
+            continue
         changeOccurred = False
         for key in currCounter:
             if key in prevCounter:
@@ -35,7 +39,6 @@ while True:
             print("change occurred")
             # todo: call API and convert to audio
         prevCounter = currCounter
-
         print(prevCounter)
 
     # If captured image is corrupted, moving to else part
