@@ -1,11 +1,12 @@
 from ultralytics import YOLO
 import cv2 as cv
 from collections import Counter
+import os
 import replicate
 from PIL import Image
 import base64
 
-
+os.environ["REPLICATE_API_TOKEN"] = "f76c82c8e540e402e79f8ce24fa69957294fef9c"
 prevCounter = Counter()
 model = YOLO("weights/best.pt")
 
@@ -23,16 +24,13 @@ while True:
         cv.imwrite("example.png", image)
         
         # Encoding the image file to base64 string
-        with open("example.png", "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         results = model.predict(source="example.png", show=True)
         classes = results[0].boxes.cls.numpy()
         currCounter = Counter(classes)
-        prevCounter = currCounter
-        print(prevCounter)
         
         if len(currCounter) == 0:
             prevCounter = currCounter
+
             print("no objects detected")
             continue
         changeOccurred = False
@@ -48,6 +46,8 @@ while True:
             # todo: call API and convert to audio
         # for result in results:
         #     print(result.boxes.conf.numpy())
+            with open("example.png", "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
             model_replicate = replicate.models.get("rmokady/clip_prefix_caption")
             version = model_replicate.versions.get("9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8")
 
@@ -68,7 +68,8 @@ while True:
         # https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#output-schema
         # The description string
             output = version.predict(**inputs)
-            
+            print(output)
+        prevCounter = currCounter
 
     # If captured image is corrupted, moving to else part
     else:
