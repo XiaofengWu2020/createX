@@ -5,6 +5,9 @@ import os
 import replicate
 from PIL import Image
 import base64
+import gtts
+from playsound import playsound
+
 
 os.environ["REPLICATE_API_TOKEN"] = "f76c82c8e540e402e79f8ce24fa69957294fef9c"
 prevCounter = Counter()
@@ -69,6 +72,16 @@ while True:
         # The description string
             output = version.predict(**inputs)
             print(output)
+
+            # make request to google to get synthesis
+            tts = gtts.gTTS(output)
+
+            # save the audio file
+            tts.save("description.mp3")
+
+            # play the audio file
+            playsound(os.path.dirname(__file__) + "\description.mp3")
+
         prevCounter = currCounter
 
     # If captured image is corrupted, moving to else part
