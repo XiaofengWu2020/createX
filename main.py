@@ -51,8 +51,8 @@ while True:
             model_replicate = replicate.models.get("rmokady/clip_prefix_caption")
             version = model_replicate.versions.get("9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8")
 
-        # https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#input
-        #Do this in your terminal before running! export REPLICATE_API_TOKEN=d0e77e654a18ac90f64e75e1d498a45bd6a72030
+            #https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#input
+            #Do this in your terminal before running! export REPLICATE_API_TOKEN=d0e77e654a18ac90f64e75e1d498a45bd6a72030
             # Creating the inputs dictionary with the URI to the image file
             inputs = {
                 # Input image URI
