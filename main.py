@@ -22,9 +22,6 @@ while True:
         # saving image in local storage
         cv.imwrite("example.png", image)
         
-        # Encoding the image file to base64 string
-        with open("example.png", "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
         results = model.predict(source="example.png", show=True)
         classes = results[0].boxes.cls.numpy()
         currCounter = Counter(classes)
@@ -46,13 +43,14 @@ while True:
         if changeOccurred:
             print("change occurred")
             # todo: call API and convert to audio
-        # for result in results:
-        #     print(result.boxes.conf.numpy())
+            # Encoding the image file to base64 string
+            with open("example.png", "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
             model_replicate = replicate.models.get("rmokady/clip_prefix_caption")
             version = model_replicate.versions.get("9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8")
 
-        # https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#input
-        #Do this in your terminal before running! export REPLICATE_API_TOKEN=d0e77e654a18ac90f64e75e1d498a45bd6a72030
+            #https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#input
+            #Do this in your terminal before running! export REPLICATE_API_TOKEN=d0e77e654a18ac90f64e75e1d498a45bd6a72030
             # Creating the inputs dictionary with the URI to the image file
             inputs = {
                 # Input image URI
@@ -68,6 +66,7 @@ while True:
         # https://replicate.com/rmokady/clip_prefix_caption/versions/9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8#output-schema
         # The description string
             output = version.predict(**inputs)
+            print(output)
             
 
     # If captured image is corrupted, moving to else part
